@@ -1,0 +1,67 @@
+import java.io.FileOutputStream;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class MSSQLToExcelMultiSheet {
+
+    public static void SqlUtil() {
+        String jdbcURL = "jdbc:sqlserver://<HOST>:<PORT>;databaseName=<DB_NAME>";
+        String username = "<USERNAME>";
+        String password = "<PASSWORD>";
+
+        // Generate file name with timestamp
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String excelFilePath = "Results_" + timestamp + ".xlsx";
+
+        // Define your two queries
+        String query1 = "SELECT * FROM table_one";
+        String query2 = "SELECT * FROM table_two";
+
+        try (Connection connection = DriverManager.getConnection(jdbcURL, username, password);
+             Workbook workbook = new XSSFWorkbook()) {
+
+            writeQueryResultToSheet(connection, query1, workbook, "Table_One_Data");
+            writeQueryResultToSheet(connection, query2, workbook, "Table_Two_Data");
+
+            try (FileOutputStream fileOut = new FileOutputStream(excelFilePath)) {
+                workbook.write(fileOut);
+                System.out.println("Excel file created: " + excelFilePath);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void writeQueryResultToSheet(Connection connection, String query, Workbook workbook, String sheetName) {
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            Sheet sheet = workbook.createSheet(sheetName);
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            // Header
+            Row headerRow = sheet.createRow(0);
+            for (int i = 1; i <= columnCount; i++) {
+                Cell cell = headerRow.createCell(i - 1);
+                cell.setCellValue(metaData.getColumnLabel(i));
+            }
+
+            // Data
+            int rowIndex = 1;
+            while (resultSet.next()) {
+                Row row = sheet.createRow(rowIndex++);
+                for (int i = 1; i <= columnCount; i++) {
+                    row.createCell(i - 1).setCellValue(resultSet.getString(i));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
