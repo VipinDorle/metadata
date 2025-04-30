@@ -1,0 +1,78 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+
+public class MethodSelectorUI extends JFrame {
+
+    private JCheckBox[] checkBoxes = new JCheckBox[6];
+    private JButton runButton = new JButton("Run");
+
+    public MethodSelectorUI() {
+        setTitle("Query Selector");
+        setSize(300, 300);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        JPanel checkboxPanel = new JPanel(new GridLayout(6, 1));
+        for (int i = 0; i < 6; i++) {
+            checkBoxes[i] = new JCheckBox("Run Method " + (i + 1));
+            checkboxPanel.add(checkBoxes[i]);
+        }
+
+        runButton.addActionListener(this::handleRun);
+
+        add(checkboxPanel, BorderLayout.CENTER);
+        add(runButton, BorderLayout.SOUTH);
+
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    private void handleRun(ActionEvent e) {
+        for (int i = 0; i < checkBoxes.length; i++) {
+            if (checkBoxes[i].isSelected()) {
+                runMethod(i + 1);
+            }
+        }
+    }
+
+    // Define placeholder methods
+    private void runMethod(int methodNumber) {
+        switch (methodNumber) {
+            case 1 -> method1();
+            case 2 -> method2();
+            case 3 -> method3();
+            case 4 -> method4();
+            case 5 -> method5();
+            case 6 -> method6();
+        }
+    }
+
+    private void method1() {
+        System.out.println("Running Method 1");
+    }
+
+    private void method2() {
+        System.out.println("Running Method 2");
+    }
+
+    private void method3() {
+        System.out.println("Running Method 3");
+    }
+
+    private void method4() {
+        System.out.println("Running Method 4");
+    }
+
+    private void method5() {
+        System.out.println("Running Method 5");
+    }
+
+    private void method6() {
+        System.out.println("Running Method 6");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(MethodSelectorUI::new);
+    }
+}
