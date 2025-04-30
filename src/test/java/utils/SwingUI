@@ -2,26 +2,35 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class MethodSelectorUI extends JFrame {
+public class CustomCheckboxUI extends JFrame {
 
-    private JCheckBox[] checkBoxes = new JCheckBox[6];
+    // Individually named checkboxes
+    private JCheckBox queryAlphaCheckBox = new JCheckBox("Run Alpha Query");
+    private JCheckBox queryBetaCheckBox = new JCheckBox("Run Beta Query");
+    private JCheckBox queryGammaCheckBox = new JCheckBox("Run Gamma Query");
+    private JCheckBox queryDeltaCheckBox = new JCheckBox("Run Delta Query");
+    private JCheckBox queryEpsilonCheckBox = new JCheckBox("Run Epsilon Query");
+    private JCheckBox queryZetaCheckBox = new JCheckBox("Run Zeta Query");
+
     private JButton runButton = new JButton("Run");
 
-    public MethodSelectorUI() {
-        setTitle("Query Selector");
-        setSize(300, 300);
+    public CustomCheckboxUI() {
+        setTitle("Query Runner");
+        setSize(350, 300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        JPanel checkboxPanel = new JPanel(new GridLayout(6, 1));
-        for (int i = 0; i < 6; i++) {
-            checkBoxes[i] = new JCheckBox("Run Method " + (i + 1));
-            checkboxPanel.add(checkBoxes[i]);
-        }
+        JPanel checkBoxPanel = new JPanel(new GridLayout(6, 1));
+        checkBoxPanel.add(queryAlphaCheckBox);
+        checkBoxPanel.add(queryBetaCheckBox);
+        checkBoxPanel.add(queryGammaCheckBox);
+        checkBoxPanel.add(queryDeltaCheckBox);
+        checkBoxPanel.add(queryEpsilonCheckBox);
+        checkBoxPanel.add(queryZetaCheckBox);
 
         runButton.addActionListener(this::handleRun);
 
-        add(checkboxPanel, BorderLayout.CENTER);
+        add(checkBoxPanel, BorderLayout.CENTER);
         add(runButton, BorderLayout.SOUTH);
 
         setLocationRelativeTo(null);
@@ -29,50 +38,40 @@ public class MethodSelectorUI extends JFrame {
     }
 
     private void handleRun(ActionEvent e) {
-        for (int i = 0; i < checkBoxes.length; i++) {
-            if (checkBoxes[i].isSelected()) {
-                runMethod(i + 1);
-            }
-        }
+        if (queryAlphaCheckBox.isSelected()) runAlphaQuery();
+        if (queryBetaCheckBox.isSelected()) runBetaQuery();
+        if (queryGammaCheckBox.isSelected()) runGammaQuery();
+        if (queryDeltaCheckBox.isSelected()) runDeltaQuery();
+        if (queryEpsilonCheckBox.isSelected()) runEpsilonQuery();
+        if (queryZetaCheckBox.isSelected()) runZetaQuery();
     }
 
-    // Define placeholder methods
-    private void runMethod(int methodNumber) {
-        switch (methodNumber) {
-            case 1 -> method1();
-            case 2 -> method2();
-            case 3 -> method3();
-            case 4 -> method4();
-            case 5 -> method5();
-            case 6 -> method6();
-        }
+    // Your actual query methods
+    private void runAlphaQuery() {
+        System.out.println("Running Alpha Query");
     }
 
-    private void method1() {
-        System.out.println("Running Method 1");
+    private void runBetaQuery() {
+        System.out.println("Running Beta Query");
     }
 
-    private void method2() {
-        System.out.println("Running Method 2");
+    private void runGammaQuery() {
+        System.out.println("Running Gamma Query");
     }
 
-    private void method3() {
-        System.out.println("Running Method 3");
+    private void runDeltaQuery() {
+        System.out.println("Running Delta Query");
     }
 
-    private void method4() {
-        System.out.println("Running Method 4");
+    private void runEpsilonQuery() {
+        System.out.println("Running Epsilon Query");
     }
 
-    private void method5() {
-        System.out.println("Running Method 5");
-    }
-
-    private void method6() {
-        System.out.println("Running Method 6");
+    private void runZetaQuery() {
+        System.out.println("Running Zeta Query");
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(MethodSelectorUI::new);
+        SwingUtilities.invokeLater(CustomCheckboxUI::new);
     }
 }
